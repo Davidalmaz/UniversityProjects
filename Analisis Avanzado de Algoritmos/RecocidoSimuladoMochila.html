@@ -1,0 +1,109 @@
+<!-- El problema de la mochila es un problema polinomial no-determinístico (non-deterministic polynomial, NP), estos se caracterizan por no tener algoritmos de resolución que garanticen un tiempo de ejecución polinomial, sin embargo, es posible “adivinar” una solución y chequear que tan buena es, en tiempo polinomial.
+	
+Al utilizar algoritmos de recocido simulado nos ayudaría a encontrar una buena aproximación al valor óptimo de una función en un espacio de búsqueda grande. A este valor óptimo se lo denomina óptimo global, donde se busca abarcar todas las posibles variaciones del sistema. -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"/>
+<script src="objetos.js"></script>
+
+</head>
+<body>
+
+<h2>Recocido Simulado: </h2><h2>Problema de la mochila </h2>
+	
+Cantidad maxima de iteraciones (M):<br>
+<input type="text" id="it" value="10" width="4">
+<br><br>
+Temperatura (T):<br>
+<input type="text" id="temp" value="500" width="4">
+<br><br>
+Factor de enfriamiento (valor entre 0.1 y 0.9):<br>
+<input type="text" id="cd" value="0.6" width="4">
+<br><br>
+<input type="submit" value="Submit" onclick="mochila()">
+
+<div id="picho" style="height:200px;width:250px;border:3px solid #ccc;font:16px/26px Cambria, Garamond, Serif;overflow:auto;"></div>
+
+<p id="sol"></p>
+
+<script>
+function mochila(){
+	n = objetos.length;
+	M = parseInt(document.getElementById('it').value);
+	var T = parseInt(document.getElementById('temp').value);;
+	var cd = parseFloat(document.getElementById('cd').value);;
+	var m,delta,r,p;
+	var S = new Array;
+	var Sp = new Array;
+	
+	//se genera la primera solcion posible
+	for(var i = 0; i < n; i++) {
+        S[i] = Math.round(Math.random());
+	}
+
+	do{
+		m=0;
+		document.getElementById("picho").innerHTML += "<br>Temperatura: " + T.toFixed(8) ;
+		do{
+
+			Sp = S.slice();
+			var i = Math.round(Math.random() * (n-1));
+			if (Sp[i] == 1)
+				Sp[i] = 0;
+			else 
+				Sp[i] = 1;
+			delta = evaluar(S,true) - evaluar(Sp,false); //calculo de delta
+			r = Math.random();
+			p = probabilidad(delta,T); //determinacion de probabilidad
+			document.getElementById("picho").innerHTML += "Prob. Cambio: " + p.toFixed(4) + "<br>";
+			if (delta < 0 || r < p){
+				S = Sp.slice();
+				document.getElementById("picho").innerHTML += "Cambio realizado<br>";
+			}
+			m++;
+		}while(m < M);
+		T = T * cd;
+	}while(T > 0.1);
+
+	document.getElementById("sol").innerHTML += "Mejor resultado: " + S + " Beneficio alcanzado: "+ evaluar(S)+ "<br>";
+}
+function evaluar(S,x){
+	var vol = 0, ben = 0;
+	var ev;
+	var flag = true;
+	do{
+		for(var i=0; i< S.length; i++) {
+	        if (S[i] == 1) {
+	        	ben = ben + objetos[i].B;
+	        	vol = vol + objetos[i].V;
+	        }
+	    }
+	    if (vol <= capacidad){
+	    	ev = ben + (capacidad - vol); //funcion de evaluacion
+	    	flag = false;
+	    }
+	    else { //se evita guardar individuos que excedan la capacidad de la mochila
+	    	do{
+				nro = Math.floor((Math.random() * S.length));
+			}while (S[nro] != 1)
+			S[nro] = 0;
+	    }
+	    vol = 0; ben = 0;
+	}while (flag);
+	if(x) 
+		var w = "<br>S: "; 
+	else 
+		var w = "Sp: ";
+	document.getElementById("picho").innerHTML += w + S + " Evaluacion: " + ev + "<br>";
+    return ev;
+}
+function probabilidad(d,t){
+	return 1 / (1 + Math.exp(d/t)); //funcion de probabilidad
+}
+</script>
+</body>
+</html> 

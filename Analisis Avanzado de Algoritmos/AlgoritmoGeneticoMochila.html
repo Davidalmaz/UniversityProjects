@@ -1,0 +1,231 @@
+<!-- Al considerarse un problema polinomial no-determinístico, caracterizados por no tener algoritmos de resolución que garanticen un tiempo de ejecución polinomial, se utilizarán algoritmos genéticos, ya que han demostrado ser los más adecuados para dar soluciones de alta calidad a problemas grandes de este tipo, y actualmente son la forma más eficiente de encontrar una solución óptima aproximada a problemas de optimización.
+	
+Se busca solucionar el problema usando la secuencia que utilizan los algoritmos genéticos básicos, como lo son los operadores genéticos, que son la mutación y el cruzamiento, y realizar una selección eficiente al momento de reemplazar individuos para formar una nueva población.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"/>
+<script src="objetos.js"></script>
+
+</head>
+<body>
+
+<h2>Algoritmo Genetico: </h2><h2>Problema de la mochila </h2>
+
+Cantidad de individuos de la poblacion:<br>
+<input type="text" id="pob" value="8" width="4">
+<br>
+Cantidad maxima de generaciones:<br>
+<input type="text" id="gen" value="1" width="4">
+<br>
+Probabilidad de mutacion:<br>
+<input type="text" id="mut" value="5" width="4">%
+<br><br>
+<input type="submit" value="Submit" onclick="mochila()">
+
+<p id="picho"></p>
+
+<script>
+var p,g,n,pm;
+function mochila(){
+	//cantidad de individuos
+	p = parseInt(document.getElementById('pob').value);
+	//cantidad de generaciones
+	g = parseInt(document.getElementById('gen').value);
+	//cantidad de items a elegir
+	n = objetos.length;
+	//porcentaje de mutacion
+	pm = parseInt(document.getElementById('mut').value);
+	var fitness; //arreglo de aptitud
+	var poblacion = new Array; 
+	var gActual = 1;
+
+	//generar matriz poblacion
+	for(var i=0; i<p; i++) {
+    	poblacion[i] = new Array;
+    	for(var j=0; j<n; j++) {
+        	poblacion[i][j] = Math.round(Math.random());        
+        }
+	}
+
+	do{
+		if(gActual > 1) 
+			poblacion = Seleccion(poblacion, fitness);
+		fitness = Calculofitness(poblacion);
+		bubbleSort(fitness,poblacion);
+
+		document.getElementById("picho").innerHTML += "Generacion: "+ gActual + "<br>";
+		//imprimir poblacion y fitness
+		document.getElementById("picho").innerHTML += "Poblacion: <br>";
+		for (i = 0; i < p; i++) {
+		    document.getElementById("picho").innerHTML += poblacion[i];
+		   	document.getElementById("picho").innerHTML += "  Fitness: ";
+		   	document.getElementById("picho").innerHTML += fitness[i] + "<br>";
+		}
+		gActual++;
+	}while(gActual <= g && convergencia(fitness) == false);
+
+	document.getElementById("picho").innerHTML += "<br>Resultado:<br>Mejor individuo:  " + poblacion[poblacion.length-1] + " Beneficio alcanzado: " + fitness[fitness.length-1];
+}
+function convergencia(fit){
+	var aux = 0;
+	for(var i=fit.length-1; i>0; i--){
+		if(fit[i] == fit[i-1])
+			aux++;
+		else
+			break;
+	}
+	if(aux+1 >= Math.round(fit.length * 0.9))
+		return true;
+	else
+		return false;
+}
+
+function Calculofitness(pob){
+	var vol= 0, ben = 0;
+	var fit = new Array;
+	for(var i=0; i<pob.length; i++) {
+    	for(var j=0; j<pob[i].length; j++) {
+        	if (pob[i][j]==1) {
+        		ben = ben + objetos[j].B;
+        		vol = vol + objetos[j].V;
+        	}
+    	}
+    	if (vol <= capacidad){
+    		fit[i] = ben+(capacidad-vol);
+    	}
+    	else { //se evita guardar individuos que excedan la capacidad de 
+    		   //la mochila
+    		//fit[i] = ({ V: vol, B: -1 });
+    		do{
+				nro = Math.floor((Math.random() * pob[i].length));
+			}
+			while (pob[i][nro] != 1);
+			pob[i][nro] = 0;
+			i--;
+    	}
+    	vol = 0; ben = 0;
+	}
+    return fit;
+}
+
+function Seleccion(pob, fit){
+	//Metodo de la ruleta
+	var SumBenf = 0;
+	var porcfit = new Array;
+	var pobTemp = new Array; //matriz temporal para la nueva generacion
+	
+	//distribuir el porcentaje de probabilidad de seleccion 
+	for(var i=0; i < fit.length; i++){
+		SumBenf += fit[i];
+	}
+	for(var i=0; i < fit.length; i++){
+		porcfit[i] = fit[i] / SumBenf;
+	}
+
+	porcfit.sort();
+
+	for(var i=0; i < fit.length-1; i++){
+		porcfit[i+1] += porcfit[i]; //se suman los % para tener un rango
+	}								//de 0.0 a 0.100
+
+	//ELITISMO
+	if(p%2==0){
+		pobTemp[0] = pob[pob.length-1];
+		pobTemp[1] = pob[pob.length-2];
+	}
+	else{
+		pobTemp[0] = pob[pob.length-1];
+	}
+
+	var i1,i2;
+	var hijos;
+	for (i = pobTemp.length; i < porcfit.length; ) {
+		i1 = ruleta(Math.random(),porcfit);
+		i2 = ruleta(Math.random(),porcfit);
+		hijos = cruce(pob[i1],pob[i2]);
+		pobTemp[i++] = hijos[0];
+		pobTemp[i++] = hijos[1];
+	}
+
+	return pobTemp;
+}
+
+function cruce(padre1,padre2) {
+	//Se realiza cruce de 1 punto
+	var ptoCorte = Math.floor((Math.random() * padre1.length-1) + 1);
+	var h1 = new Array;
+	var h2 = new Array;
+
+	for(var i=0; i < padre1.length; i++){
+		if(i<ptoCorte){
+			h1[i] = padre1[i];
+			h2[i] = padre2[i];
+		}
+		else {
+			h1[i] = padre2[i];
+			h2[i] = padre1[i];
+		}
+	}
+
+	if (Math.floor((Math.random() * 100) + 1) < pm) {
+		document.getElementById("picho").innerHTML += "<br>MUTACION";
+		return (mutacion([h1, h2]));
+	}	
+		return [h1, h2];
+
+}
+
+function mutacion(h){
+	//Mutacion por intercambio:
+	var i = Math.floor((Math.random() * h[0].length-1))
+	var j = Math.floor((Math.random() * h[0].length-1))
+	if (h[0][i] == 0)
+		h[0][i] = 1;
+	else
+		h[0][i] = 0;
+
+	if (h[1][j] == 0)
+		h[1][j] = 1;
+	else
+		h[1][j] = 0;
+
+	return h;
+}
+
+function bubbleSort(arr,arr2){
+   var len = arr.length;
+   for (var i = len-1; i>=0; i--){
+     for(var j = 1; j<=i; j++){
+       if(arr[j-1]>arr[j]){
+           var temp = arr[j-1];
+           arr[j-1] = arr[j];
+           arr[j] = temp;
+           temp = arr2[j-1];
+           arr2[j-1] = arr2[j];
+           arr2[j] = temp;
+        }
+     }
+   }
+}
+
+function ruleta(random,porcfit){
+	//Retorna el indice del item dependiendo del rango al que corresponda 
+	//el random
+	if (random >= 0 && random <= porcfit[0]){
+		return 0;
+	}
+	else{
+		for(var i=0; i < porcfit.length-1; i++){
+			if (random > porcfit[i] && random <= porcfit[i+1]){
+				return i+1;
+			}
+		}
+	}
+}
+</script>
+</body>
+</html> 
