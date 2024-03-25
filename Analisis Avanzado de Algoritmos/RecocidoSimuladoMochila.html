@@ -40,7 +40,7 @@ function mochila(){
 	var S = new Array;
 	var Sp = new Array;
 	
-	//se genera la primera solcion posible
+	// Se genera la primera solcion posible
 	for(var i = 0; i < n; i++) {
         S[i] = Math.round(Math.random());
 	}
@@ -56,9 +56,9 @@ function mochila(){
 				Sp[i] = 0;
 			else 
 				Sp[i] = 1;
-			delta = evaluar(S,true) - evaluar(Sp,false); //calculo de delta
+			delta = evaluar(S,true) - evaluar(Sp,false); // Calculo de delta
 			r = Math.random();
-			p = probabilidad(delta,T); //determinacion de probabilidad
+			p = probabilidad(delta,T); // Determinacion de probabilidad
 			document.getElementById("picho").innerHTML += "Prob. Cambio: " + p.toFixed(4) + "<br>";
 			if (delta < 0 || r < p){
 				S = Sp.slice();
@@ -83,10 +83,10 @@ function evaluar(S,x){
 	        }
 	    }
 	    if (vol <= capacidad){
-	    	ev = ben + (capacidad - vol); //funcion de evaluacion
+	    	ev = ben + (capacidad - vol); // Funcion de evaluacion
 	    	flag = false;
 	    }
-	    else { //se evita guardar individuos que excedan la capacidad de la mochila
+	    else { // Se evita guardar individuos que excedan la capacidad de la mochila
 	    	do{
 				nro = Math.floor((Math.random() * S.length));
 			}while (S[nro] != 1)
@@ -102,7 +102,7 @@ function evaluar(S,x){
     return ev;
 }
 function probabilidad(d,t){
-	return 1 / (1 + Math.exp(d/t)); //funcion de probabilidad
+	return 1 / (1 + Math.exp(d/t)); // Funcion de probabilidad
 }
 </script>
 </body>
