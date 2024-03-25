@@ -31,19 +31,19 @@ Probabilidad de mutacion:<br>
 <script>
 var p,g,n,pm;
 function mochila(){
-	//cantidad de individuos
+	// Cantidad de individuos
 	p = parseInt(document.getElementById('pob').value);
-	//cantidad de generaciones
+	// Cantidad de generaciones
 	g = parseInt(document.getElementById('gen').value);
-	//cantidad de items a elegir
+	// Cantidad de items a elegir
 	n = objetos.length;
-	//porcentaje de mutacion
+	// Porcentaje de mutacion
 	pm = parseInt(document.getElementById('mut').value);
-	var fitness; //arreglo de aptitud
+	var fitness; // Arreglo de aptitud
 	var poblacion = new Array; 
 	var gActual = 1;
 
-	//generar matriz poblacion
+	// Generar matriz poblacion
 	for(var i=0; i<p; i++) {
     	poblacion[i] = new Array;
     	for(var j=0; j<n; j++) {
@@ -58,7 +58,7 @@ function mochila(){
 		bubbleSort(fitness,poblacion);
 
 		document.getElementById("picho").innerHTML += "Generacion: "+ gActual + "<br>";
-		//imprimir poblacion y fitness
+		// Imprimir poblacion y fitness
 		document.getElementById("picho").innerHTML += "Poblacion: <br>";
 		for (i = 0; i < p; i++) {
 		    document.getElementById("picho").innerHTML += poblacion[i];
@@ -97,9 +97,9 @@ function Calculofitness(pob){
     	if (vol <= capacidad){
     		fit[i] = ben+(capacidad-vol);
     	}
-    	else { //se evita guardar individuos que excedan la capacidad de 
-    		   //la mochila
-    		//fit[i] = ({ V: vol, B: -1 });
+    	else { // Se evita guardar individuos que excedan la capacidad de 
+    		   // La mochila
+    		// fit[i] = ({ V: vol, B: -1 });
     		do{
 				nro = Math.floor((Math.random() * pob[i].length));
 			}
@@ -113,12 +113,12 @@ function Calculofitness(pob){
 }
 
 function Seleccion(pob, fit){
-	//Metodo de la ruleta
+	// Metodo de la ruleta
 	var SumBenf = 0;
 	var porcfit = new Array;
-	var pobTemp = new Array; //matriz temporal para la nueva generacion
+	var pobTemp = new Array; // Matriz temporal para la nueva generacion
 	
-	//distribuir el porcentaje de probabilidad de seleccion 
+	// Distribuir el porcentaje de probabilidad de seleccion 
 	for(var i=0; i < fit.length; i++){
 		SumBenf += fit[i];
 	}
@@ -129,10 +129,10 @@ function Seleccion(pob, fit){
 	porcfit.sort();
 
 	for(var i=0; i < fit.length-1; i++){
-		porcfit[i+1] += porcfit[i]; //se suman los % para tener un rango
-	}								//de 0.0 a 0.100
+		porcfit[i+1] += porcfit[i]; // Se suman los % para tener un rango
+	}								// de 0.0 a 0.100
 
-	//ELITISMO
+	// ELITISMO
 	if(p%2==0){
 		pobTemp[0] = pob[pob.length-1];
 		pobTemp[1] = pob[pob.length-2];
@@ -155,7 +155,7 @@ function Seleccion(pob, fit){
 }
 
 function cruce(padre1,padre2) {
-	//Se realiza cruce de 1 punto
+	// Se realiza cruce de 1 punto
 	var ptoCorte = Math.floor((Math.random() * padre1.length-1) + 1);
 	var h1 = new Array;
 	var h2 = new Array;
@@ -180,7 +180,7 @@ function cruce(padre1,padre2) {
 }
 
 function mutacion(h){
-	//Mutacion por intercambio:
+	// Mutacion por intercambio:
 	var i = Math.floor((Math.random() * h[0].length-1))
 	var j = Math.floor((Math.random() * h[0].length-1))
 	if (h[0][i] == 0)
@@ -213,8 +213,8 @@ function bubbleSort(arr,arr2){
 }
 
 function ruleta(random,porcfit){
-	//Retorna el indice del item dependiendo del rango al que corresponda 
-	//el random
+	// Retorna el indice del item dependiendo del rango al que corresponda 
+	// el random
 	if (random >= 0 && random <= porcfit[0]){
 		return 0;
 	}
