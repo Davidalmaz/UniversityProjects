@@ -1,0 +1,44 @@
+Error on line 16: va 8 0 dc 5v
+Device already exists, existing one being used
+Error on line 18: vb 7 0 dc 0v
+Device already exists, existing one being used
+Error on line 20: vb 10 0 dc 0v
+Device already exists, existing one being used
+Error on line 22: va 11 0 dc 5v
+Device already exists, existing one being used
+Error on line 24: va 13 0 dc 0v
+Device already exists, existing one being used
+Error on line 26: va 16 0 dc 0v
+Device already exists, existing one being used
+Error on line 28: vb 15 0 dc 0v
+Device already exists, existing one being used
+Error on line 30: vb 18 0 dc 0v
+Device already exists, existing one being used
+Error on line 32: va 19 0 dc 5v
+Device already exists, existing one being used
+Circuit: *Spice netlist for Circuit: C:\Users\Ángela\Documents\0. PRÁCTICA 1\Parte A.CKT
+Date: Fri Oct 22 00:04:22  2021
+
+
+
+WARNING: Convergence problems at node (26).  (Instance: a2 Pin: out Port: 1)
+
+WARNING: Convergence problems at node (28).  (Instance: a2 Pin: out Port: 2)
+
+WARNING: Convergence problems at node (31).  (Instance: a2 Pin: out Port: 3)
+
+WARNING: Convergence problems at node (33).  (Instance: a2 Pin: out Port: 4)
+
+WARNING: Convergence problems at node (36).  (Instance: a2 Pin: out Port: 5)
+
+WARNING: Convergence problems at node (38).  (Instance: a2 Pin: out Port: 6)
+
+WARNING: Convergence problems at node (41).  (Instance: a2 Pin: out Port: 7)
+
+WARNING: Convergence problems at node (44).  (Instance: a2 Pin: out Port: 8)
+
+WARNING: Convergence problems at node (46).  (Instance: a2 Pin: out Port: 9)
+
+Total elapsed time: 0.039 seconds.
+
+

@@ -1,0 +1,40 @@
+*Spice netlist for Circuit: C:\Users\David\Desktop\ExpoLab.CKT
+VDVCC 28 0 DC 5
+* BEGIN Adding ADC and/or DAC
+A1 [31 32 34 36 38 39] [4 5 6 7 8 28] dac_mod
+A2 [30] [3] dav_mod
+A3 [0 5 6 7 28] [29 33 35 37 40] adc_mod
+.model dav_mod xdav
+.model dac_mod xdac
+.model adc_mod xadc
+* END adding ADC and/or DAC
+
+*0=0V 1=5V
+V1 6 0 DC 0V
+*0=0V 1=5V
+V2 5 0 DC 0V
+*0=0V 1=5V
+V1 7 0 DC 0V
+ANAND [40 29 9 10][39 9 10 11] A74LS00
+ANAND [40 29 12 13][39 12 13 14] A74LS00
+ANAND [40 29 30 15][39 30 15 31] A74LS00
+ANAND [40 29 35 33][39 34 32 30] A74LS00
+ANAND [40 29 16 17][39 16 17 18] A74LS00
+ANANC [40 29 19 20][39 19 20 21] A74LS00
+ANANB [40 29 22 37][39 22 36 38] A74LS00
+ANANA [40 29 23 24][39 23 24 25] A74LS00
+RLAMP1 4 0 100
+RLAMP 8 0 100
+.SAVE V(3) V(4) V(5) V(6) V(7) V(8) @v1[p] v1#branch @v2[p] v2#branch @v1[p]
+.SAVE v1#branch @rlamp1[p] @rlamp1[i] @rlamp[p] @rlamp[i]
+*BKGND=RGB 0 0 0
+*BINARY RAW FILE
+
+* Selected Circuit Analyses :
+.OP
+
+* Models/Subcircuits Used:
+
+*74LS00 LS 2-in NAND - type:digital pkg:DIP14 [DVCC=14;DGND=7;](A:1,2,3)(B:4,5,6)(C:9,10,8)(D:12,13,11)
+.MODEL A74LS00 xsimcode(file="C:\CM60S\MODELS\LS.SCB" func=ls00 )
+.END

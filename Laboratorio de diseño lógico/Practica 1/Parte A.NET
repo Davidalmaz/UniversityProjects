@@ -1,0 +1,77 @@
+*Spice netlist for Circuit: C:\Users\Ángela\Documents\0. PRÁCTICA 1\Parte A.CKT
+VDVCC 22 0 DC 5
+* BEGIN Adding ADC and/or DAC
+A1 [24 25 27 29 30 32 34 35 37 39 40 42] [3 4 5 6 7 8 9 10 11 12 13 14] dac_mod
+A2 [0 4 5 7 8 10 11 13 15 16 18 19] [23 26 28 31 33 36 38 41 44 46 49 51] adc_mod
+A3 [43 45 47 48 50 52] [15 16 17 18 19 22] dac_mod
+A4 [22] [53] adc_mod
+.model dac_mod xdac
+.model adc_mod xadc
+* END adding ADC and/or DAC
+
+*0=0V 1=5V
+VB 4 0 DC 0V
+*0=0V 1=5V
+VA 5 0 DC 5V
+*0=0V 1=5V
+VA 8 0 DC 5V
+*0=0V 1=5V
+VB 7 0 DC 0V
+*0=0V 1=5V
+VB 10 0 DC 0V
+*0=0V 1=5V
+VA 11 0 DC 5V
+*0=0V 1=5V
+VA 13 0 DC 0V
+*0=0V 1=5V
+VA 16 0 DC 0V
+*0=0V 1=5V
+VB 15 0 DC 0V
+*0=0V 1=5V
+VB 18 0 DC 0V
+*0=0V 1=5V
+VA 19 0 DC 5V
+AXOR [53 23 28 26][52 27 25 24] A74LS86
+AOR [53 23 33 31][52 32 30 29] A74LS32
+AND [53 23 38 36][52 37 35 34] A74LS08
+ANOT [53 23 41][52 40 39] A74LS04
+AN [53 23 46 44][52 45 43 42] A74LS02
+ANAND [53 23 51 49][52 50 48 47] A74LS00
+RS6 3 0 100
+RS5 6 0 100
+RS4 9 0 100
+RS3 12 0 100
+RS2 14 0 100
+RS1 17 0 100
+.SAVE V(3) V(4) V(5) V(6) V(7) V(8) V(9) V(10) V(11) V(12) V(13) V(14) V(15)
+.SAVE V(16) V(17) V(18) V(19) @vb[p] vb#branch @va[p] va#branch @va[p] va#branch
+.SAVE @vb[p] vb#branch @vb[p] vb#branch @va[p] va#branch @va[p] va#branch @va[p]
+.SAVE va#branch @vb[p] vb#branch @vb[p] vb#branch @va[p] va#branch @rs6[p]
+.SAVE @rs6[i] @rs5[p] @rs5[i] @rs4[p] @rs4[i] @rs3[p] @rs3[i] @rs2[p] @rs2[i]
+.SAVE @rs1[p] @rs1[i]
+*BKGND=RGB 0 0 0
+*BINARY RAW FILE
+
+* Selected Circuit Analyses :
+.OP
+
+* Models/Subcircuits Used:
+
+*74LS86 LS Qaud 2-input XOR - type:digital pkg:DIP14 [DVCC=14;DGND=7;](A:1,2,3)(B:4,5,6)(C:9,10,8)(D:12,13,11)
+.MODEL A74LS86 xsimcode(file="C:\CM60S\MODELS\LS.SCB" func=ls86 )
+
+*74LS32 LS Quad 2-in OR - type:digital pkg:DIP14 [DVCC=14;DGND=7;](A:1,2,3)(B:4,5,6)(C:9,10,8)(D:12,13,11)
+.MODEL A74LS32 xsimcode(file="C:\CM60S\MODELS\LS.SCB" func=ls32 )
+
+*74LS08 LS Quad 2-input AND - type:digital pkg:DIP14 [DVCC=14;DGND=7;](A:1,2,3)(B:4,5,6)(C:9,10,8)(D:12,13,11)
+.MODEL A74LS08 xsimcode(file="C:\CM60S\MODELS\LS.SCB" func=ls08 )
+
+*74LS04 LS Hex Inverter - type:digital pkg:DIP14 [DVCC=14;DGND=7;](A:1,2)(B:3,4)(C:5,6)(D:9,8)(E:11,10)(F:13,12)
+.MODEL A74LS04 xsimcode(file="C:\CM60S\MODELS\LS.SCB" func=ls04 )
+
+*74LS02 LS 2-in NOR - type:digital pkg:DIP14 [DVCC=14;DGND=7;](A:1,2,3)(B:4,5,6)(C:9,10,8)(D:12,13,11)
+.MODEL A74LS02 xsimcode(file="C:\CM60S\MODELS\LS.SCB" func=ls02 )
+
+*74LS00 LS 2-in NAND - type:digital pkg:DIP14 [DVCC=14;DGND=7;](A:1,2,3)(B:4,5,6)(C:9,10,8)(D:12,13,11)
+.MODEL A74LS00 xsimcode(file="C:\CM60S\MODELS\LS.SCB" func=ls00 )
+.END
